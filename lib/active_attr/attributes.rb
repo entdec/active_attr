@@ -66,7 +66,8 @@ module ActiveAttr
       class_attribute :filter_attributes, :instance_writer => false
       self.filter_attributes = Attributes.filter_attributes
 
-      attribute_method_suffix "" if attribute_method_matchers.none? { |matcher| matcher.prefix == "" && matcher.suffix == "" }
+      # Unsure what the intention is of the following line, but this method no longer exists in ActiveModel 7.1
+      # attribute_method_suffix "" if attribute_method_matchers.none? { |matcher| matcher.prefix == "" && matcher.suffix == "" }
       attribute_method_suffix "="
     end
 
