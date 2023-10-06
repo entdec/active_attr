@@ -66,10 +66,10 @@ module ActiveAttr
       class_attribute :filter_attributes, :instance_writer => false
       self.filter_attributes = Attributes.filter_attributes
 
-      # Unsure what the intention is of the following line, but this method no longer exists in ActiveModel 7.1
-      # attribute_method_suffix "" if attribute_method_matchers.none? { |matcher| matcher.prefix == "" && matcher.suffix == "" }
+      attribute_method_suffix "" if attribute_method_matchers.none? { |matcher| matcher.prefix == "" && matcher.suffix == "" }
       attribute_method_suffix "="
     end
+  
 
     # Performs equality checking on the result of attributes and its type.
     #
@@ -349,6 +349,11 @@ module ActiveAttr
       def attribute_methods(name)
         attribute_method_matchers.map { |matcher| matcher.method_name name }
       end
+
+      # Because of this rename https://github.com/rails/rails/commit/251445601eb2e00bc15aacf261a85f919ab7f9de
+       def attribute_method_matchers
+         ActiveModel.version >= Gem::Version.new("7.1.a") ? attribute_method_patterns : super
+       end
 
       # Ruby inherited hook to assign superclass attributes to subclasses
       #
